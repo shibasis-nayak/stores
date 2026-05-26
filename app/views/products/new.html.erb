@@ -1,0 +1,48 @@
+
+
+<% if @product.errors.any? %>
+
+  <h2>Errors:</h2>
+
+  <ul>
+
+    <% @product.errors.full_messages.each do |message| %>
+
+      <li><%= message %></li>
+
+    <% end %>
+
+  </ul>
+
+<% end %>
+
+<h1>New Product</h1>
+
+<%= form_with model: @product do |form| %>
+
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.label :price %>
+    <%= form.number_field :price %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+
+  <br>
+
+  <div>
+    <%= form.submit "Create Product" %>
+  </div>
+
+<% end %>
