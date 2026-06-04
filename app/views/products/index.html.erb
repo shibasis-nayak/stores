@@ -1,34 +1,100 @@
 <% if notice %>
-  <p><%= notice %></p>
+  <p class= >
+    <%= notice %>
+  </p>
 <% end %>
-<h1>Products</h1>
 
-<%= link_to "New Product", "/products/new" %>
+<div style="
+  text-align: center;
+  background-color: lightgray;
+  padding: 40px;
+  border-radius: 10px;
+">
 
-<br>
+  <h1 style="
+    color: darkblue;
+    font-size: 40px;
+    margin-bottom: 20px;
+  ">
+    Products
+  </h1>
+
+  <%= link_to "New Product",
+      "/products/new",
+      style: "
+        background-color: blue;
+        color: white;
+        padding: 12px 20px;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 18px;
+      "
+  %>
+
+</div>
+
 <br>
 
 <% @products.each do |product| %>
 
-  <div>
+  <div style="
+    background-color: #f5f5f5;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid gray;
+  ">
 
-    <h2><%= product.name %></h2>
+    <h2 style="color: darkblue;">
+      <%= product.name %>
+    </h2>
 
-    <p>Price: <%= product.price %></p>
+    <p>
+      <strong>Price:</strong>
+      <%= product.price %>
+    </p>
 
-    <p>Description: <%= product.description %></p>
+    <p>
+      <strong>Description:</strong>
+      <%= product.description %>
+    </p>
 
-    <%= link_to "Show", "/products/#{product.id}" %>
+    <%= link_to "Show",
+        "/products/#{product.id}",
+        style: "
+          background-color: blue;
+          color: white;
+          padding: 8px 14px;
+          text-decoration: none;
+          border-radius: 5px;
+          margin-right: 10px;
+        "
+    %>
 
-    <%= link_to "Edit", "/products/#{product.id}/edit" %>
+    <%= link_to "Edit",
+        "/products/#{product.id}/edit",
+        style: "
+          background-color: orange;
+          color: white;
+          padding: 8px 14px;
+          text-decoration: bnone;
+          border-radius: 5px;
+          margin-right: 10px;
+        "
+    %>
 
-    <%= link_to "Delete", "/products/#{product.id}", data: {
-      turbo_method: :delete,
-      turbo_confirm: "Are you sure?"
-    } %>
+    <%= link_to "Delete",
+        "/products/#{product.id}",
+        method: :delete,
+        style: "
+          background-color: red;
+          color: white;
+          padding: 8px 14px;
+          text-decoration: none;
+          border-radius: 5px;
+        "
+    %>
 
   </div>
-
-  <hr>
 
 <% end %>

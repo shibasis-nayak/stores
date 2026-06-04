@@ -1,3 +1,44 @@
-<h1>WELCOME To My Store APP</h1>
+<div class="container text-center mt-5">
 
-<%= link_to "Click here for going to products page", "/products" %>
+  <h1 class="text-secondary">
+    Welcome to My Store Project
+  </h1>
+
+  <p class="mt-3">
+    User signed in? <%= user_signed_in? %>
+  </p>
+
+  <% if user_signed_in? %>
+    <p>
+      Logged in as: <%= current_user.email %>
+    </p>
+    <% else %>
+    <%= link_to "go to sign up page",
+        new_user_registration_path,
+        class: "btn btn-success" %>
+      
+    <%= link_to "go to log in page",
+        new_user_session_path,
+        class: "btn btn-primary" %>
+       
+  <% end %>
+
+
+  <div class="mt-4">
+
+    <%= link_to "Go To My Products Page",
+        products_path,
+        class: "btn btn-primary btn-lg rounded-pill px-4 py-2 shadow" %>
+
+  </div>
+
+  <div class="mt-3">
+
+    <%= button_to "Log Out",
+        destroy_user_session_path,
+        method: :delete,
+        class: "btn btn-danger" %>
+
+  </div>
+
+</div>

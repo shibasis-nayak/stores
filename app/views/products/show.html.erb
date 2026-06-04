@@ -1,5 +1,29 @@
-<h1><%= @product.name %></h1>
+<div class="container mt-4">
 
-<p>Price: <%= @product.price %></p>
+  <h1 class="text-primary mb-4">
+    <%= @product.name %>
+  </h1>
 
-<p>Description: <%= @product.description %></p>
+  <div class="card">
+
+    <div class="card-body">
+
+      <p class="fs-5">
+        <strong>Price:</strong>
+        <%= @product.price %>
+      </p>
+
+      <p class="fs-5">
+        <strong>Description:</strong>
+        <%= @product.description %>
+      </p>
+
+      <%= link_to "Back to Products",
+          products_path,
+          class: "btn btn-primary" %>
+
+    </div>
+
+  </div>
+
+</div>
