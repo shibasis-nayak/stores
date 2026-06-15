@@ -21,6 +21,7 @@ gem "dartsass-rails"
 gem "devise"
 gem 'activeadmin'
 
+
 # Plus integrations with:
 gem 'cancancan'
 gem 'draper'
