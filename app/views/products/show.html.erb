@@ -17,6 +17,11 @@
         <strong>Description:</strong>
         <%= @product.description %>
       </p>
+      
+      <p class="fs-5">
+        <strong>Category:</strong>
+        <%= @product.category.name %>
+      </p>
 
       <%= link_to "Back to Products",
           products_path,

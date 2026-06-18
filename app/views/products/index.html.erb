@@ -59,6 +59,11 @@
       <%= product.description %>
     </p>
 
+    <p>
+      <strong>Category:</strong>
+      <%= product&.category&.name %>
+    </p>
+
     <%= link_to "Show",
         "/products/#{product.id}",
         style: "
