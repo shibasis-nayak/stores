@@ -4,6 +4,23 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.all
+
+    if params[:name].present?
+      @products = @products.where(
+        "LOWER(name) LIKE ?",
+        "%#{params[:name].downcase}%"
+      )
+    end
+
+    if params[:price].present?
+      @products = @products.where(price: params[:price])
+    end
+
+    if params[:category_id].present?
+      @products = @products.where(category_id: params[:category_id])
+    end
+
+    @categories = Category.all
   end
 
   def new

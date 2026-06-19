@@ -1,8 +1,86 @@
 <% if notice %>
-  <p class= >
+  <p>
     <%= notice %>
   </p>
 <% end %>
+
+<div style="
+  background-color: lightgray;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+">
+
+  <h2>Filters</h2>
+
+  <%= form_with url: products_path, method: :get, local: true do %>
+
+    <div style="
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: end;
+    ">
+
+      <div>
+        <label>Name</label><br>
+
+        <%= text_field_tag :name,
+              params[:name],
+              placeholder: "Enter Product Name" %>
+      </div>
+
+      <div>
+        <label>Price</label><br>
+
+        <%= text_field_tag :price,
+              params[:price],
+              placeholder: "Enter Price" %>
+      </div>
+
+      <div>
+        <label>Category</label><br>
+
+        <%= select_tag :category_id,
+              options_from_collection_for_select(
+                @categories,
+                :id,
+                :name,
+                params[:category_id]
+              ),
+              include_blank: "All Categories" %>
+      </div>
+
+      <div>
+        <%= submit_tag "Search",
+              style: "
+                background-color: blue;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+              " %>
+      </div>
+
+      <div>
+        <%= link_to "Clear",
+              products_path,
+              style: "
+                background-color: gray;
+                color: white;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 5px;
+                display: inline-block;
+              " %>
+      </div>
+
+    </div>
+
+  <% end %>
+
+</div>
 
 <div style="
   text-align: center;
@@ -82,7 +160,7 @@
           background-color: orange;
           color: white;
           padding: 8px 14px;
-          text-decoration: bnone;
+          text-decoration: none;
           border-radius: 5px;
           margin-right: 10px;
         "
@@ -90,7 +168,10 @@
 
     <%= link_to "Delete",
         "/products/#{product.id}",
-        method: :delete,
+        data: {
+          turbo_method: :delete,
+          turbo_confirm: "Are you sure?"
+        },
         style: "
           background-color: red;
           color: white;
