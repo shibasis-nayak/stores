@@ -1,0 +1,54 @@
+<div class="container mt-5">
+
+  <div class="card shadow">
+
+    <div class="card-body">
+
+      <h1 class="text-primary mb-4">
+        <%= @category.name %>
+      </h1>
+
+      <h3 class="mb-3">
+        Products
+      </h3>
+
+      <% if @products.any? %>
+
+        <% @products.each do |product| %>
+
+          <div class="card mb-3">
+
+            <div class="card-body">
+
+              <h5>
+                <%= product.name %>
+              </h5>
+
+              <p>
+                <strong>Price:</strong>
+                ₹<%= product.price %>
+              </p>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      <% else %>
+
+        <div class="alert alert-warning">
+          No products found in this category.
+        </div>
+
+      <% end %>
+
+      <%= link_to "Back",
+          categories_path,
+          class: "btn btn-secondary mt-3" %>
+
+    </div>
+
+  </div>
+
+</div>

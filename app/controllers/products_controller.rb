@@ -4,15 +4,32 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.all
+
+    if params[:name].present?
+      @products = @products.where(
+        "LOWER(name) LIKE ?",
+        "%#{params[:name].downcase}%"
+      )
+    end
+
+    if params[:price].present?
+      @products = @products.where(price: params[:price])
+    end
+
+    if params[:category_id].present?
+      @products = @products.where(category_id: params[:category_id])
+    end
+
+    @categories = Category.all
   end
-  
+
   def new
     @product = Product.new
   end
 
   def show
-  @product = Product.find(params[:id])
-end
+    @product = Product.find(params[:id])
+  end
 
   def create
     @product = Product.new(product_params)
@@ -20,7 +37,7 @@ end
     if @product.save
       redirect_to "/products"
     else
-      render :new,status: :unprocessable_entity
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -39,17 +56,22 @@ end
   end
 
   def destroy
-  @product = Product.find(params[:id])
+    @product = Product.find(params[:id])
 
-  @product.destroy
+    @product.destroy
 
-  redirect_to "/products", notice: "Product deleted successfully!"
-end
+    redirect_to "/products", notice: "Product deleted successfully!"
+  end
 
   private
 
   def product_params
-    params.require(:product).permit(:name, :price, :description)
+    params.require(:product).permit(
+      :name,
+      :price,
+      :description,
+      :category_id
+    )
   end
 
 end
