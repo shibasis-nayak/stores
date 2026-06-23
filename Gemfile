@@ -20,6 +20,7 @@ gem "bootstrap", "~> 5.3"
 gem "dartsass-rails"
 gem "devise"
 gem 'activeadmin'
+gem 'kaminari'
 
 
 # Plus integrations with:
