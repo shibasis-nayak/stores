@@ -20,6 +20,8 @@ class ProductsController < ApplicationController
       @products = @products.where(category_id: params[:category_id])
     end
 
+    @products = @products.page(params[:page]).per(10)
+
     @categories = Category.all
   end
 
