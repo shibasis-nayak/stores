@@ -39,6 +39,18 @@
     </div>
   <% end %>
 
+  <% if user_signed_in? %>
+
+  <% if current_user.profile_picture.attached? %>
+    <%= image_tag current_user.profile_picture, width: 100 %>
+  <% else %>
+    <%= image_tag "default_profile.png", width: 100 %>
+  <% end %>
+
+  <p><%= current_user.email %></p>
+
+<% end %>
+
   <%= yield %>
 
 </body>
