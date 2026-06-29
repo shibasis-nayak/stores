@@ -64,16 +64,27 @@ class ProductsController < ApplicationController
 
     redirect_to "/products", notice: "Product deleted successfully!"
   end
+  def upload_images
+  @product = Product.find(params[:id])
+
+  if params[:product][:images].present?
+    @product.images.attach(params[:product][:images])
+    redirect_to @product, notice: "Images uploaded successfully."
+  else
+    redirect_to @product, alert: "Please select at least one image."
+  end
+end
 
   private
 
   def product_params
-    params.require(:product).permit(
-      :name,
-      :price,
-      :description,
-      :category_id
-    )
-  end
+  params.require(:product).permit(
+    :name,
+    :price,
+    :description,
+    :category_id,
+    images: []
+  )
+end
 
 end

@@ -1,6 +1,8 @@
 class Product < ApplicationRecord
   belongs_to :category, optional: true
 
+
+  has_many_attached :images
   validates :name, presence: true, uniqueness: true
   validates :price, presence: true
   validates :description, presence: true, uniqueness: true
