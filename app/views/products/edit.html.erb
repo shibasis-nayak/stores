@@ -34,7 +34,47 @@
           ) %>
     </div>
 
-    <div>
+    <div class="mb-3">
+      <%= form.label :images, "Upload More Images", class: "form-label" %>
+
+      <%= form.file_field :images,
+            multiple: true,
+            class: "form-control" %>
+    </div>
+
+    <hr>
+
+    <h4 class="mb-3">
+      Current Images
+    </h4>
+
+    <% if @product.images.attached? %>
+
+      <div class="row">
+
+        <% @product.images.each do |image| %>
+
+          <div class="col-md-3 mb-3">
+
+            <%= image_tag image,
+                  class: "img-fluid rounded shadow",
+                  style: "height:200px; width:100%; object-fit:cover;" %>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <p class="text-muted">
+        No images uploaded yet.
+      </p>
+
+    <% end %>
+
+    <div class="mt-4">
       <%= form.submit "Update Product",
             class: "btn btn-warning" %>
     </div>
