@@ -32,6 +32,19 @@
           ) %>
     </div>
 
+    <!-- Multiple Image Upload -->
+    <div class="mb-3">
+      <%= form.label :images, "Product Images", class: "form-label" %>
+
+      <%= form.file_field :images,
+            multiple: true,
+            class: "form-control" %>
+
+      <small class="text-muted">
+        You can select multiple images.
+      </small>
+    </div>
+
     <div>
       <%= form.submit "Create Product",
             class: "btn btn-success" %>

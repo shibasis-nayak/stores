@@ -1,5 +1,4 @@
 class ProductsController < ApplicationController
-
   before_action :authenticate_user!
 
   def index
@@ -50,10 +49,14 @@ class ProductsController < ApplicationController
   def update
     @product = Product.find(params[:id])
 
-    if @product.update(product_params)
-      redirect_to "/products"
+    uploaded_images = product_params[:images]
+    update_params = product_params.except(:images)
+
+    if @product.update(update_params)
+      @product.images.attach(uploaded_images) if uploaded_images.present?
+      redirect_to @product, notice: "Product updated successfully."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -65,6 +68,17 @@ class ProductsController < ApplicationController
     redirect_to "/products", notice: "Product deleted successfully!"
   end
 
+  def upload_images
+    @product = Product.find(params[:id])
+
+    if params[:product][:images].present?
+      @product.images.attach(params[:product][:images])
+      redirect_to @product, notice: "Images uploaded successfully."
+    else
+      redirect_to @product, alert: "Please select at least one image."
+    end
+  end
+
   private
 
   def product_params
@@ -72,8 +86,8 @@ class ProductsController < ApplicationController
       :name,
       :price,
       :description,
-      :category_id
+      :category_id,
+      images: []
     )
   end
-
 end
