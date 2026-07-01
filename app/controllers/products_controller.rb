@@ -19,6 +19,18 @@ class ProductsController < ApplicationController
       @products = @products.where(category_id: params[:category_id])
     end
 
+    # Stock Filter
+    if params[:stock_status].present?
+
+      if params[:stock_status] == "in_stock"
+        @products = @products.where("stock >= ?", 1)
+
+      elsif params[:stock_status] == "out_of_stock"
+        @products = @products.where(stock: 0)
+
+      end
+    end
+
     @products = @products.page(params[:page]).per(10)
 
     @categories = Category.all

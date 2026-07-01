@@ -52,6 +52,20 @@
       </div>
 
       <div>
+  <label>Stock Status</label><br>
+
+  <%= select_tag :stock_status,
+        options_for_select(
+          [
+            ["All", ""],
+            ["In Stock", "in_stock"],
+            ["Out of Stock", "out_of_stock"]
+          ],
+          params[:stock_status]
+        ) %>
+    </div>
+
+      <div>
         <%= submit_tag "Search",
               style: "
                 background-color: blue;
