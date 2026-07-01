@@ -86,6 +86,7 @@ class ProductsController < ApplicationController
       :name,
       :price,
       :description,
+      :stock,
       :category_id,
       images: []
     )
