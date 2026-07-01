@@ -11,8 +11,7 @@ class Product < ApplicationRecord
             presence: true
 
   validates :description,
-            presence: true,
-            uniqueness: true
+            presence: true
 
   validates :stock,
             presence: true,
