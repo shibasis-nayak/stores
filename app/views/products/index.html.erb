@@ -52,6 +52,20 @@
       </div>
 
       <div>
+  <label>Stock Status</label><br>
+
+  <%= select_tag :stock_status,
+        options_for_select(
+          [
+            ["All", ""],
+            ["In Stock", "in_stock"],
+            ["Out of Stock", "out_of_stock"]
+          ],
+          params[:stock_status]
+        ) %>
+    </div>
+
+      <div>
         <%= submit_tag "Search",
               style: "
                 background-color: blue;
@@ -123,8 +137,35 @@
     border: 1px solid gray;
   ">
 
-    <h2 style="color: darkblue;">
+    <h2 style="
+      color: darkblue;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    ">
+
       <%= product.name %>
+
+      <% if product.stock > 5 %>
+
+        <span class="badge bg-success">
+          In Stock
+        </span>
+
+      <% elsif product.stock > 0 %>
+
+        <span class="badge bg-warning text-dark">
+          Only <%= product.stock %> left!
+        </span>
+
+      <% else %>
+
+        <span class="badge bg-danger">
+          Out of Stock
+        </span>
+
+      <% end %>
+
     </h2>
 
     <p>
