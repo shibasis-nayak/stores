@@ -6,4 +6,6 @@ class User < ApplicationRecord
          :validatable
 
   has_one_attached :profile_picture
+
+  has_many :ratings, dependent: :destroy
 end

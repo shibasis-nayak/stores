@@ -1,56 +1,195 @@
-<div class="container mt-4">
+<div class="container py-5">
 
-  <h1 class="text-primary mb-4">Edit Product</h1>
+  <div class="row justify-content-center">
 
-  <%= form_with model: @product do |form| %>
+    <div class="col-lg-8 col-xl-7">
 
-    <div class="mb-3">
-      <%= form.label :name, class: "form-label" %>
-      <%= form.text_field :name, class: "form-control" %>
+      <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+        <!-- Header -->
+
+        <div
+          class="text-center text-white py-5"
+          style="background: linear-gradient(135deg, #fd7e14, #dc3545);">
+
+          <div class="display-3 mb-3">
+            ✏️
+          </div>
+
+          <h2 class="fw-bold mb-2">
+            Edit Product
+          </h2>
+
+          <p class="mb-0 fs-5">
+            Update your product information
+          </p>
+
+        </div>
+
+        <!-- Form -->
+
+        <div class="card-body bg-light p-5">
+
+          <%= form_with model: @product do |form| %>
+
+            <!-- Product Name -->
+
+            <div class="mb-4">
+
+              <%= form.label :name,
+                    class: "form-label fw-bold fs-5" %>
+
+              <%= form.text_field :name,
+                    class: "form-control form-control-lg rounded-3 shadow-sm",
+                    placeholder: "Enter Product Name" %>
+
+            </div>
+
+            <!-- Price & Stock -->
+
+            <div class="row">
+
+              <div class="col-md-6 mb-4">
+
+                <%= form.label :price,
+                      class: "form-label fw-bold fs-5" %>
+
+                <%= form.number_field :price,
+                      class: "form-control form-control-lg rounded-3 shadow-sm",
+                      placeholder: "₹ Enter Price" %>
+
+              </div>
+
+              <div class="col-md-6 mb-4">
+
+                <%= form.label :stock,
+                      class: "form-label fw-bold fs-5" %>
+
+                <%= form.number_field :stock,
+                      class: "form-control form-control-lg rounded-3 shadow-sm",
+                      min: 0,
+                      placeholder: "Available Stock" %>
+
+              </div>
+
+            </div>
+
+            <!-- Description -->
+
+            <div class="mb-4">
+
+              <%= form.label :description,
+                    class: "form-label fw-bold fs-5" %>
+
+              <%= form.text_area :description,
+                    rows: 5,
+                    class: "form-control rounded-3 shadow-sm",
+                    placeholder: "Write a detailed description..." %>
+
+            </div>
+
+            <!-- Category -->
+
+            <div class="mb-4">
+
+              <%= form.label :category_id,
+                    "Category",
+                    class: "form-label fw-bold fs-5" %>
+
+              <%= form.collection_select(
+                    :category_id,
+                    Category.all,
+                    :id,
+                    :name,
+                    { prompt: "Choose a Category" },
+                    { class: "form-select form-select-lg rounded-3 shadow-sm" }
+                  ) %>
+
+            </div>
+
+            <!-- Upload Images -->
+
+            <div class="mb-5">
+
+              <label class="form-label fw-bold fs-5">
+                Update Product Images
+              </label>
+
+              <div class="border border-2 border-warning rounded-4 p-4 bg-white text-center">
+
+                <div class="display-5 mb-3">
+                  🖼️
+                </div>
+
+                <%= form.file_field :images,
+                      multiple: true,
+                      class: "form-control form-control-lg" %>
+
+                <div class="text-muted mt-3">
+                  Select one or multiple images to replace or add new product images.
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Current Images -->
+
+            <% if @product.images.attached? %>
+
+              <div class="mb-5">
+
+                <h4 class="fw-bold text-primary mb-3">
+                  Current Images
+                </h4>
+
+                <div class="row">
+
+                  <% @product.images.each do |image| %>
+
+                    <div class="col-md-4 mb-3">
+
+                      <div class="card shadow-sm">
+
+                        <%= image_tag image,
+                              class: "card-img-top rounded",
+                              style: "height:220px; object-fit:cover;" %>
+
+                      </div>
+
+                    </div>
+
+                  <% end %>
+
+                </div>
+
+              </div>
+
+            <% end %>
+
+            <hr class="my-4">
+
+            <!-- Buttons -->
+
+            <div class="d-flex justify-content-between">
+
+              <%= link_to "← Back to Products",
+                    products_path,
+                    class: "btn btn-outline-secondary btn-lg rounded-pill px-4" %>
+
+              <%= form.submit "💾 Update Product",
+                    class: "btn btn-warning text-white btn-lg rounded-pill px-5 shadow" %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="mb-3">
-      <%= form.label :price, class: "form-label" %>
-      <%= form.number_field :price, class: "form-control" %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :stock, class: "form-label" %>
-      <%= form.number_field :stock, class: "form-control", min: 0 %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :description, class: "form-label" %>
-      <%= form.text_field :description, class: "form-control" %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :category_id, "Category", class: "form-label" %>
-
-      <%= form.collection_select(
-            :category_id,
-            Category.all,
-            :id,
-            :name,
-            { prompt: "Select Category" },
-            { class: "form-select" }
-          ) %>
-    </div>
-
-    <div class="mb-3">
-      <%= form.label :images, "Product Images", class: "form-label" %>
-
-      <%= form.file_field :images,
-            multiple: true,
-            class: "form-control" %>
-
-      <small class="text-muted">
-        You can select multiple images.
-      </small>
-    </div>
-
-    <%= form.submit "Update Product", class: "btn btn-primary" %>
-
-  <% end %>
+  </div>
 
 </div>
