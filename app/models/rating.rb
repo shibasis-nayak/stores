@@ -6,9 +6,7 @@ class Rating < ApplicationRecord
             presence: true,
             inclusion: { in: 1..5 }
 
-  validates :user_id,
-            uniqueness: {
-              scope: :product_id,
-              message: "has already rated this product"
-            }
+  validates :review,
+            presence: true,
+            length: { minimum: 10, maximum: 500 }
 end
