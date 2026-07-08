@@ -10,8 +10,8 @@
 
         <div>
           <p class="text-danger fw-bold">
-  Product ID: <%= @product.id %>
-     </p>
+          Product ID: <%= @product.id %>
+          </p>
           <h1 class="fw-bold mb-2">
             <%= @product.name %>
           </h1>
@@ -55,8 +55,8 @@
           <% if @product.images.attached? %>
 
             <%= image_tag @product.images.first,
-                  class: "img-fluid rounded-4 shadow-lg border border-4 border-white",
-                  style: "height:450px;width:100%;object-fit:cover;" %>
+              class: "img-fluid rounded-4 shadow-lg border border-4 border-white",
+              style: "height:450px;width:100%;object-fit:cover;" %>
 
           <% else %>
 
@@ -124,7 +124,7 @@
               </h5>
 
               <p class="text-secondary">
-                <%= @product.description %>
+              <%= @product.description %>
               </p>
 
               <hr>
@@ -156,145 +156,145 @@
                 </span>
 
               <% end %>
-        <hr class="my-5">
+              <hr class="my-5">
 
-      <hr class="my-5">
+              <hr class="my-5">
 
-<h3 class="text-primary fw-bold mb-4">
-  💬 Customer Reviews
-</h3>
+              <h3 class="text-primary fw-bold mb-4">
+                💬 Customer Reviews
+              </h3>
 
-<p>Total Reviews: <%= @product.ratings.count %></p>
+              <p>Total Reviews: <%= @product.ratings.count %></p>
 
-<% @product.ratings.each do |rating| %>
+              <% @product.ratings.each do |rating| %>
 
-  <div style="border:2px solid red;padding:20px;margin-bottom:20px;">
+                <div style="border:2px solid red;padding:20px;margin-bottom:20px;">
 
-    <p><strong>Rating:</strong> <%= rating.rating %></p>
+                  <p><strong>Rating:</strong> <%= rating.rating %></p>
 
-    <p><strong>Review:</strong> <%= rating.review.inspect %></p>
+                  <p><strong>Review:</strong> <%= rating.review.inspect %></p>
 
-    <p><strong>User:</strong> <%= rating.user.email %></p>
+                  <p><strong>User:</strong> <%= rating.user.email %></p>
 
-  </div>
+                </div>
 
-<% end %>
-      <!-- Gallery -->
+              <% end %>
+              <!-- Gallery -->
 
-      <% if @product.images.attached? %>
+              <% if @product.images.attached? %>
 
-        <div class="mt-5">
+                <div class="mt-5">
 
-          <div class="text-center mb-4">
+                  <div class="text-center mb-4">
 
-            <h2 class="fw-bold text-primary">
-              🖼 Product Gallery
-            </h2>
+                    <h2 class="fw-bold text-primary">
+                      🖼 Product Gallery
+                    </h2>
 
-          </div>
+                  </div>
 
-          <div class="row">
+                  <div class="row">
 
-            <% @product.images.each do |image| %>
+                    <% @product.images.each do |image| %>
 
-              <div class="col-lg-3 col-md-4 col-6 mb-4">
+                      <div class="col-lg-3 col-md-4 col-6 mb-4">
 
-                <%= image_tag image,
-                      class: "img-fluid rounded-4 shadow-lg border border-3 border-light",
-                      style: "height:220px;width:100%;object-fit:cover;" %>
+                        <%= image_tag image,
+                          class: "img-fluid rounded-4 shadow-lg border border-3 border-light",
+                          style: "height:220px;width:100%;object-fit:cover;" %>
+
+                      </div>
+
+                    <% end %>
+
+                  </div>
+
+                </div>
+
+              <% end %>
+
+
+              <div class="card mt-5 border-0 shadow rounded-4">
+
+                <div class="card-header text-white"
+                     style="background:linear-gradient(135deg,#e11d48,#ec4899);">
+
+
+                  <h4 class="mb-0">
+                    🌟 Rate This Product
+                  </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                  <%= form_with model: @rating,
+                    url: product_ratings_path(@product),
+                    local: true do |form| %>
+
+                    <div class="row">
+
+                      <div class="col-md-4 mb-3">
+
+                        <%= form.label :rating, class: "form-label fw-bold" %>
+
+                        <%= form.select :rating,
+                          options_for_select(
+                            [
+                              ["⭐ 1 Star", 1],
+                              ["⭐⭐ 2 Stars", 2],
+                              ["⭐⭐⭐ 3 Stars", 3],
+                              ["⭐⭐⭐⭐ 4 Stars", 4],
+                              ["⭐⭐⭐⭐⭐ 5 Stars", 5]
+                            ],
+                            @rating.rating
+                          ),
+                          {},
+                          class: "form-select form-select-lg" %>
+
+                      </div>
+
+                      <div class="col-md-8 mb-3">
+
+                        <%= form.label :review, "Write Your Review", class: "form-label fw-bold" %>
+
+                        <%= form.text_area :review,
+                          rows: 4,
+                          placeholder: "Share your experience with this product...",
+                          class: "form-control" %>
+
+                      </div>
+
+                    </div>
+
+                    <div class="text-end">
+
+                      <%= form.submit "Submit Rating",
+                        class: "btn btn-danger btn-lg px-5 shadow" %>
+
+                    </div>
+                  <% end %>
+
+                </div>
 
               </div>
 
-            <% end %>
+              <!-- Buttons -->
+
+              <div class="text-center mt-5">
+
+                <%= link_to "⬅ Back",
+                  products_path,
+                  class: "btn btn-secondary btn-lg px-5 me-3 rounded-pill shadow" %>
+
+                <%= link_to "✏ Edit Product",
+              edit_product_path(@product),
+              class: "btn btn-primary btn-lg px-5 rounded-pill shadow" %>
+
+              </div>
+
+            </div>
 
           </div>
 
         </div>
-
-      <% end %>
-
- 
-       <div class="card mt-5 border-0 shadow rounded-4">
-
-  <div class="card-header text-white"
-       style="background:linear-gradient(135deg,#e11d48,#ec4899);">
-
-
-          <h4 class="mb-0">
-            🌟 Rate This Product
-          </h4>
-
-        </div>
-
-        <div class="card-body">
-
-          <%= form_with model: @rating,
-                url: product_ratings_path(@product),
-                local: true do |form| %>
-
-            <div class="row">
-
-  <div class="col-md-4 mb-3">
-
-    <%= form.label :rating, class: "form-label fw-bold" %>
-
-    <%= form.select :rating,
-          options_for_select(
-            [
-              ["⭐ 1 Star", 1],
-              ["⭐⭐ 2 Stars", 2],
-              ["⭐⭐⭐ 3 Stars", 3],
-              ["⭐⭐⭐⭐ 4 Stars", 4],
-              ["⭐⭐⭐⭐⭐ 5 Stars", 5]
-            ],
-            @rating.rating
-          ),
-          {},
-          class: "form-select form-select-lg" %>
-
-  </div>
-
-  <div class="col-md-8 mb-3">
-
-    <%= form.label :review, "Write Your Review", class: "form-label fw-bold" %>
-
-    <%= form.text_area :review,
-          rows: 4,
-          placeholder: "Share your experience with this product...",
-          class: "form-control" %>
-
-  </div>
-
-</div>
-
-<div class="text-end">
-
-  <%= form.submit "Submit Rating",
-        class: "btn btn-danger btn-lg px-5 shadow" %>
-
-</div>
-          <% end %>
-
-        </div>
-
-      </div>
-
-      <!-- Buttons -->
-
-      <div class="text-center mt-5">
-
-        <%= link_to "⬅ Back",
-              products_path,
-              class: "btn btn-secondary btn-lg px-5 me-3 rounded-pill shadow" %>
-
-        <%= link_to "✏ Edit Product",
-              edit_product_path(@product),
-              class: "btn btn-primary btn-lg px-5 rounded-pill shadow" %>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
