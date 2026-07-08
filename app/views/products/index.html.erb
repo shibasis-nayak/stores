@@ -1,93 +1,241 @@
 <% if notice %>
-  <p>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
     <%= notice %>
-  </p>
+
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="alert">
+    </button>
+  </div>
 <% end %>
 
-<div style="
-  background-color: lightgray;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-">
+<div class="card shadow-sm mb-4">
 
-  <h2>Filters</h2>
+  <div class="card-header bg-primary text-white">
+    <h3 class="mb-0">Filter Products</h3>
+  </div>
 
-  <%= form_with url: products_path, method: :get, local: true do %>
+  <div class="card-body">
 
-    <div style="
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      align-items: end;
-    ">
+    <%= form_with url: products_path, method: :get, local: true do %>
 
-      <div>
-        <label>Name</label><br>
+      <div class="row g-3">
 
-        <%= text_field_tag :name,
-              params[:name],
-              placeholder: "Enter Product Name" %>
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Product Name
+          </label>
+
+          <%= text_field_tag :name,
+                params[:name],
+                placeholder: "Enter Product Name",
+                class: "form-control" %>
+
+        </div>
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Price
+          </label>
+
+          <%= text_field_tag :price,
+                params[:price],
+                placeholder: "Enter Price",
+                class: "form-control" %>
+
+        </div>
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Category
+          </label>
+
+          <%= select_tag :category_id,
+                options_from_collection_for_select(
+                  @categories,
+                  :id,
+                  :name,
+                  params[:category_id]
+                ),
+                include_blank: "All Categories",
+                class: "form-select" %>
+
+        </div>
+
+        <div class="col-md-3">
+
+          <label class="form-label">
+            Stock Status
+          </label>
+
+          <%= select_tag :stock_status,
+                options_for_select(
+                  [
+                    ["All", ""],
+                    ["In Stock", "in_stock"],
+                    ["Out of Stock", "out_of_stock"]
+                  ],
+                  params[:stock_status]
+                ),
+                class: "form-select" %>
+
+        </div>
+
       </div>
 
-      <div>
-        <label>Price</label><br>
+      <div class="mt-4">
 
-        <%= text_field_tag :price,
-              params[:price],
-              placeholder: "Enter Price" %>
-      </div>
-
-      <div>
-        <label>Category</label><br>
-
-        <%= select_tag :category_id,
-              options_from_collection_for_select(
-                @categories,
-                :id,
-                :name,
-                params[:category_id]
-              ),
-              include_blank: "All Categories" %>
-      </div>
-
-      <div>
-  <label>Stock Status</label><br>
-
-  <%= select_tag :stock_status,
-        options_for_select(
-          [
-            ["All", ""],
-            ["In Stock", "in_stock"],
-            ["Out of Stock", "out_of_stock"]
-          ],
-          params[:stock_status]
-        ) %>
-    </div>
-
-      <div>
         <%= submit_tag "Search",
-              style: "
-                background-color: blue;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-              " %>
-      </div>
+              class: "btn btn-primary me-2" %>
 
-      <div>
         <%= link_to "Clear",
               products_path,
-              style: "
-                background-color: gray;
-                color: white;
-                padding: 10px 20px;
-                text-decoration: none;
-                border-radius: 5px;
-                display: inline-block;
-              " %>
+              class: "btn btn-secondary" %>
+
+      </div>
+
+    <% end %>
+
+  </div>
+
+</div>
+
+
+<div class="bg-light rounded shadow-sm p-4 mb-4 text-center">
+
+  <h1 class="display-5 fw-bold text-primary">
+    Products
+  </h1>
+
+  <p class="text-muted">
+    Manage your products easily
+  </p>
+
+  <%= link_to "New Product",
+      new_product_path,
+      class: "btn btn-success btn-lg" %>
+
+</div>
+
+
+<div class="row">
+
+  <% @products.each do |product| %>
+
+    <div class="col-lg-6 mb-4">
+
+      <div class="card shadow h-100 border-0">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h3 class="text-primary mb-0">
+              <%= product.name %>
+            </h3>
+
+            <% if product.stock > 5 %>
+
+              <span class="badge bg-success fs-6">
+                In Stock
+              </span>
+
+            <% elsif product.stock > 0 %>
+
+              <span class="badge bg-warning text-dark fs-6">
+                Only <%= product.stock %> Left
+              </span>
+
+            <% else %>
+
+              <span class="badge bg-danger fs-6">
+                Out of Stock
+              </span>
+
+            <% end %>
+
+          </div>
+
+          <hr>
+
+          <p class="mb-2">
+            <strong>Price:</strong>
+            ₹ <%= product.price %>
+          </p>
+
+          <p class="mb-2">
+            <strong>Description:</strong><br>
+            <%= product.description %>
+          </p>
+
+          <p class="mb-2">
+            <strong>Category:</strong>
+            <%= product.category&.name %>
+          </p>
+
+          <p class="mb-3">
+
+            <strong>Average Rating:</strong>
+
+            <% if product.ratings.any? %>
+
+              <span class="fw-bold">
+                <%= product.average_rating %> / 5
+              </span>
+
+              <br>
+
+              <span style="font-size:22px;color:gold;">
+
+                <% product.average_rating.round.times do %>
+                  ⭐
+                <% end %>
+
+                <% (5 - product.average_rating.round).times do %>
+                  ☆
+                <% end %>
+
+              </span>
+
+            <% else %>
+
+              <span class="text-muted">
+                No Ratings Yet
+              </span>
+
+            <% end %>
+
+          </p>
+
+        </div>
+
+        <div class="card-footer bg-white border-0">
+
+          <div class="d-flex gap-2">
+
+            <%= link_to "Show",
+                product_path(product),
+                class: "btn btn-primary" %>
+
+            <%= link_to "Edit",
+                edit_product_path(product),
+                class: "btn btn-warning text-white" %>
+
+            <%= link_to "Delete",
+                product_path(product),
+                data: {
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure?"
+                },
+                class: "btn btn-danger" %>
+
+          </div>
+
+        </div>
+
       </div>
 
     </div>
@@ -96,136 +244,7 @@
 
 </div>
 
-<div style="
-  text-align: center;
-  background-color: lightgray;
-  padding: 40px;
-  border-radius: 10px;
-">
 
-  <h1 style="
-    color: darkblue;
-    font-size: 40px;
-    margin-bottom: 20px;
-  ">
-    Products
-  </h1>
-
-  <%= link_to "New Product",
-      "/products/new",
-      style: "
-        background-color: blue;
-        color: white;
-        padding: 12px 20px;
-        text-decoration: none;
-        border-radius: 8px;
-        font-size: 18px;
-      "
-  %>
-
-</div>
-
-<br>
-
-<% @products.each do |product| %>
-
-  <div style="
-    background-color: #f5f5f5;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    border: 1px solid gray;
-  ">
-
-    <h2 style="
-      color: darkblue;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    ">
-
-      <%= product.name %>
-
-      <% if product.stock > 5 %>
-
-        <span class="badge bg-success">
-          In Stock
-        </span>
-
-      <% elsif product.stock > 0 %>
-
-        <span class="badge bg-warning text-dark">
-          Only <%= product.stock %> left!
-        </span>
-
-      <% else %>
-
-        <span class="badge bg-danger">
-          Out of Stock
-        </span>
-
-      <% end %>
-
-    </h2>
-
-    <p>
-      <strong>Price:</strong>
-      <%= product.price %>
-    </p>
-
-    <p>
-      <strong>Description:</strong>
-      <%= product.description %>
-    </p>
-
-    <p>
-      <strong>Category:</strong>
-      <%= product&.category&.name %>
-    </p>
-
-    <%= link_to "Show",
-        "/products/#{product.id}",
-        style: "
-          background-color: blue;
-          color: white;
-          padding: 8px 14px;
-          text-decoration: none;
-          border-radius: 5px;
-          margin-right: 10px;
-        "
-    %>
-
-    <%= link_to "Edit",
-        "/products/#{product.id}/edit",
-        style: "
-          background-color: orange;
-          color: white;
-          padding: 8px 14px;
-          text-decoration: none;
-          border-radius: 5px;
-          margin-right: 10px;
-        "
-    %>
-
-    <%= link_to "Delete",
-        "/products/#{product.id}",
-        data: {
-          turbo_method: :delete,
-          turbo_confirm: "Are you sure?"
-        },
-        style: "
-          background-color: red;
-          color: white;
-          padding: 8px 14px;
-          text-decoration: none;
-          border-radius: 5px;
-        "
-    %>
-
-  </div>
-
-<% end %>
-
-<div class="d-flex justify-content-center mt-4">
+<div class="d-flex justify-content-center mt-4 mb-5">
   <%= paginate @products %>
 </div>

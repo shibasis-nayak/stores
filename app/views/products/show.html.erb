@@ -1,67 +1,71 @@
-<div class="container mt-4">
+<div class="container py-5">
 
-  <h1 class="text-primary mb-4 d-flex justify-content-between align-items-center">
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
 
-    <%= @product.name %>
+    <!-- Header -->
+    <div class="p-5 text-white"
+         style="background: linear-gradient(135deg,#4f46e5,#06b6d4);">
 
-    <% if @product.stock > 5 %>
+      <div class="d-flex justify-content-between align-items-center">
 
-      <span class="badge bg-success">
-        In Stock
-      </span>
+        <div>
+          <p class="text-danger fw-bold">
+  Product ID: <%= @product.id %>
+     </p>
+          <h1 class="fw-bold mb-2">
+            <%= @product.name %>
+          </h1>
 
-    <% elsif @product.stock > 0 %>
+          <h5 class="text-light">
+            <%= @product.category&.name %>
+          </h5>
+        </div>
 
-      <span class="badge bg-warning text-dark">
-        Only <%= @product.stock %> left!
-      </span>
+        <% if @product.stock > 5 %>
 
-    <% else %>
+          <span class="badge bg-success fs-5 px-4 py-3 rounded-pill">
+            ✅ In Stock
+          </span>
 
-      <span class="badge bg-danger">
-        Out of Stock
-      </span>
+        <% elsif @product.stock > 0 %>
 
-    <% end %>
+          <span class="badge bg-warning text-dark fs-5 px-4 py-3 rounded-pill">
+            ⚠ Only <%= @product.stock %> Left
+          </span>
 
-  </h1>
+        <% else %>
 
-  <div class="card">
+          <span class="badge bg-danger fs-5 px-4 py-3 rounded-pill">
+            ❌ Out of Stock
+          </span>
 
-    <div class="card-body">
+        <% end %>
 
-      <p class="fs-5">
-        <strong>Price:</strong>
-        <%= @product.price %>
-      </p>
+      </div>
 
-      <p class="fs-5">
-        <strong>Description:</strong>
-        <%= @product.description %>
-      </p>
+    </div>
 
-      <p class="fs-5">
-        <strong>Category:</strong>
-        <%= @product&.category&.name %>
-      </p>
+    <div class="card-body p-5">
 
-      <hr>
+      <div class="row g-5">
 
-      <h4 class="mb-3">
-        Product Images
-      </h4>
+        <!-- Product Image -->
+        <div class="col-lg-6">
 
-      <% if @product.images.attached? %>
+          <% if @product.images.attached? %>
 
-        <div class="row">
+            <%= image_tag @product.images.first,
+                  class: "img-fluid rounded-4 shadow-lg border border-4 border-white",
+                  style: "height:450px;width:100%;object-fit:cover;" %>
 
-          <% @product.images.each do |image| %>
+          <% else %>
 
-            <div class="col-md-3 mb-3">
+            <div class="bg-light rounded-4 shadow d-flex justify-content-center align-items-center"
+                 style="height:450px;">
 
-              <%= image_tag image,
-                    class: "img-fluid rounded shadow",
-                    style: "height: 200px; width: 100%; object-fit: cover;" %>
+              <h3 class="text-secondary">
+                No Image Available
+              </h3>
 
             </div>
 
@@ -69,43 +73,225 @@
 
         </div>
 
-      <% else %>
+        <!-- Details -->
+        <div class="col-lg-6">
 
-        <p class="text-muted">
-          No images uploaded for this product.
-        </p>
+          <div class="card border-0 shadow rounded-4">
 
-      <% end %>
+            <div class="card-header text-white"
+                 style="background:linear-gradient(135deg,#f97316,#ef4444);">
 
-      <hr>
+              <h3 class="mb-0">
+                📦 Product Details
+              </h3>
 
-      <h4 class="mb-3">
-        Upload More Images
-      </h4>
+            </div>
 
-      <%= form_with model: @product,
-            url: upload_images_product_path(@product),
-            method: :patch,
-            local: true do |form| %>
+            <div class="card-body">
 
-        <div class="mb-3">
+              <div class="mb-4">
 
-          <%= form.label :images, "Select Images", class: "form-label" %>
+                <h6 class="text-muted">
+                  Price
+                </h6>
 
-          <%= form.file_field :images,
-                multiple: true,
-                class: "form-control" %>
+                <h2 class="text-success fw-bold">
+                  ₹ <%= @product.price %>
+                </h2>
+
+              </div>
+
+              <div class="mb-4">
+
+                <span class="badge bg-info fs-6 px-3 py-2">
+                  🏷 <%= @product.category&.name %>
+                </span>
+
+              </div>
+
+              <div class="mb-4">
+
+                <span class="badge bg-dark fs-6 px-3 py-2">
+                  📦 Stock : <%= @product.stock %>
+                </span>
+
+              </div>
+
+              <hr>
+
+              <h5 class="text-primary">
+                📝 Description
+              </h5>
+
+              <p class="text-secondary">
+                <%= @product.description %>
+              </p>
+
+              <hr>
+
+              <h5 class="text-primary">
+                ⭐ Average Rating
+              </h5>
+
+              <% average = @product.ratings.average(:rating).to_f %>
+
+              <% if average > 0 %>
+
+                <div class="display-6">
+
+                  <% average.round.times do %>
+                    ⭐
+                  <% end %>
+
+                  <span class="fs-4 text-dark">
+                    <%= average.round(1) %>/5
+                  </span>
+
+                </div>
+
+              <% else %>
+
+                <span class="badge bg-secondary">
+                  No Ratings Yet
+                </span>
+
+              <% end %>
+        <hr class="my-5">
+
+      <hr class="my-5">
+
+<h3 class="text-primary fw-bold mb-4">
+  💬 Customer Reviews
+</h3>
+
+<p>Total Reviews: <%= @product.ratings.count %></p>
+
+<% @product.ratings.each do |rating| %>
+
+  <div style="border:2px solid red;padding:20px;margin-bottom:20px;">
+
+    <p><strong>Rating:</strong> <%= rating.rating %></p>
+
+    <p><strong>Review:</strong> <%= rating.review.inspect %></p>
+
+    <p><strong>User:</strong> <%= rating.user.email %></p>
+
+  </div>
+
+<% end %>
+      <!-- Gallery -->
+
+      <% if @product.images.attached? %>
+
+        <div class="mt-5">
+
+          <div class="text-center mb-4">
+
+            <h2 class="fw-bold text-primary">
+              🖼 Product Gallery
+            </h2>
+
+          </div>
+
+          <div class="row">
+
+            <% @product.images.each do |image| %>
+
+              <div class="col-lg-3 col-md-4 col-6 mb-4">
+
+                <%= image_tag image,
+                      class: "img-fluid rounded-4 shadow-lg border border-3 border-light",
+                      style: "height:220px;width:100%;object-fit:cover;" %>
+
+              </div>
+
+            <% end %>
+
+          </div>
 
         </div>
 
-        <%= form.submit "Upload Images",
-              class: "btn btn-success mb-3" %>
-
       <% end %>
 
-      <%= link_to "Back to Products",
-            products_path,
-            class: "btn btn-primary" %>
+ 
+       <div class="card mt-5 border-0 shadow rounded-4">
+
+  <div class="card-header text-white"
+       style="background:linear-gradient(135deg,#e11d48,#ec4899);">
+
+
+          <h4 class="mb-0">
+            🌟 Rate This Product
+          </h4>
+
+        </div>
+
+        <div class="card-body">
+
+          <%= form_with model: @rating,
+                url: product_ratings_path(@product),
+                local: true do |form| %>
+
+            <div class="row">
+
+  <div class="col-md-4 mb-3">
+
+    <%= form.label :rating, class: "form-label fw-bold" %>
+
+    <%= form.select :rating,
+          options_for_select(
+            [
+              ["⭐ 1 Star", 1],
+              ["⭐⭐ 2 Stars", 2],
+              ["⭐⭐⭐ 3 Stars", 3],
+              ["⭐⭐⭐⭐ 4 Stars", 4],
+              ["⭐⭐⭐⭐⭐ 5 Stars", 5]
+            ],
+            @rating.rating
+          ),
+          {},
+          class: "form-select form-select-lg" %>
+
+  </div>
+
+  <div class="col-md-8 mb-3">
+
+    <%= form.label :review, "Write Your Review", class: "form-label fw-bold" %>
+
+    <%= form.text_area :review,
+          rows: 4,
+          placeholder: "Share your experience with this product...",
+          class: "form-control" %>
+
+  </div>
+
+</div>
+
+<div class="text-end">
+
+  <%= form.submit "Submit Rating",
+        class: "btn btn-danger btn-lg px-5 shadow" %>
+
+</div>
+          <% end %>
+
+        </div>
+
+      </div>
+
+      <!-- Buttons -->
+
+      <div class="text-center mt-5">
+
+        <%= link_to "⬅ Back",
+              products_path,
+              class: "btn btn-secondary btn-lg px-5 me-3 rounded-pill shadow" %>
+
+        <%= link_to "✏ Edit Product",
+              edit_product_path(@product),
+              class: "btn btn-primary btn-lg px-5 rounded-pill shadow" %>
+
+      </div>
 
     </div>
 

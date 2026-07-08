@@ -41,8 +41,12 @@ class ProductsController < ApplicationController
   end
 
   def show
-    @product = Product.find(params[:id])
-  end
+  @product = Product.find(params[:id])
+  @rating = Rating.find_or_initialize_by(
+    user: current_user,
+    product: @product
+  )
+end
 
   def create
     @product = Product.new(product_params)

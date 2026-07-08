@@ -10,6 +10,8 @@ Rails.application.routes.draw do
     member do
       patch :upload_images
     end
+
+    resources :ratings, only: [:create]
   end
 
   resources :categories

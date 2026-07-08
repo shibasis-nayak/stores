@@ -3,6 +3,8 @@ class Product < ApplicationRecord
 
   has_many_attached :images
 
+  has_many :ratings, dependent: :destroy
+
   validates :name,
             presence: true,
             uniqueness: true
@@ -19,6 +21,10 @@ class Product < ApplicationRecord
               only_integer: true,
               greater_than_or_equal_to: 0
             }
+
+  def average_rating
+    ratings.average(:rating).to_f.round(1)
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     [
