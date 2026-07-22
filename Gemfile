@@ -19,14 +19,14 @@ gem "jbuilder"
 gem "bootstrap", "~> 5.3"
 gem "dartsass-rails"
 gem "devise"
-gem 'activeadmin'
-gem 'kaminari'
+gem "activeadmin"
+gem "kaminari"
 
 
 # Plus integrations with:
-gem 'cancancan'
-gem 'draper'
-gem 'pundit'
+gem "cancancan"
+gem "draper"
+gem "pundit"
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
@@ -68,3 +68,11 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
+
+gem "rspec-rails", "~> 8.0", groups: [ :development, :test ]
+group :test do
+  gem "capybara"
+  gem "warden"
+  gem "selenium-webdriver"
+end
+gem "pry"
