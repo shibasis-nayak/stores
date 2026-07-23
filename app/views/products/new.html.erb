@@ -19,6 +19,21 @@
         </div>
 
         <div class="card-body p-5">
+          <% if @product.errors.any? %>
+  <div class="alert alert-danger">
+
+    <h4>
+      <%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:
+    </h4>
+
+    <ul>
+      <% @product.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+
+    </div>
+   <% end %>
 
           <%= form_with model: @product do |form| %>
 

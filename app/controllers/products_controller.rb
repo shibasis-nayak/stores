@@ -6,8 +6,8 @@ class ProductsController < ApplicationController
 
     if params[:name].present?
       @products = @products.where(
-        "LOWER(name) LIKE ?",
-        "%#{params[:name].downcase}%"
+      "LOWER(name) LIKE ?",
+      "%#{params[:name].downcase}%"
       )
     end
 
@@ -41,12 +41,11 @@ class ProductsController < ApplicationController
   end
 
   def show
-  @product = Product.find(params[:id])
-  @rating = Rating.find_or_initialize_by(
-    user: current_user,
+    @product = Product.find(params[:id])
+    @rating = Rating.new(user: current_user,
     product: @product
-  )
-end
+    )
+  end
 
   def create
     @product = Product.new(product_params)
@@ -99,12 +98,12 @@ end
 
   def product_params
     params.require(:product).permit(
-      :name,
-      :price,
-      :description,
-      :stock,
-      :category_id,
-      images: []
+    :name,
+    :price,
+    :description,
+    :stock,
+    :category_id,
+    images: []
     )
   end
 end
