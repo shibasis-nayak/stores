@@ -11,10 +11,14 @@ Rails.application.routes.draw do
       patch :upload_images
     end
 
-    resources :ratings, only: [:create]
+    resources :ratings, only: [ :create ]
   end
 
   resources :categories
+
+  resource :cart, only: [ :show ]
+
+  resources :cart_items, only: [ :create, :update, :destroy ]
 
   root "welcome#index"
 end
